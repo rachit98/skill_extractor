@@ -1,6 +1,8 @@
 from pdfminer.high_level import extract_text
 import nltk
 import string
+import random
+import pandas as pd
 
 # Correspond to question tags field
 # need not be manually coded can be inputed from inventory.csv
@@ -60,15 +62,27 @@ def extract_tech_skills(input_text):
 
     for token in filtered_tokens:
         if token.lower() in TECH_SKILLS_DB:
-            store_skills.add(token)
+            store_skills.add(token.lower())
     
     for ngram in bigrams_trigrams:
         if ngram.lower() in TECH_SKILLS_DB:
-            store_skills.add(token)
+            store_skills.add(token.lower())
     
     return store_skills
 
 
+def get_questions(skill_list):
+    question_bank = pd.read_csv('./inventory.csv')
+
+    question_bank = question_bank.loc[question_bank['tag'].isin(skill_list)]
+
+    return question_bank['question']
+
+
 if __name__=='__main__':
     text = extract_text_from_pdf('./JD/MS_JD.pdf') # Can be autoupdated based on Candidate id/ Job id
-    print('Tech Skills : ',extract_tech_skills(text))
+    skill_list = list(extract_tech_skills(text))
+    print('Tech Skills : ',skill_list)
+    questions_list = list(get_questions(skill_list))
+    print(questions_list)
+    print(random.sample(questions_list, 3))
