@@ -71,10 +71,19 @@ def extract_tech_skills(input_text):
     return store_skills
 
 
-def get_questions(skill_list):
+def get_questions_for_round_1(skill_list):
     question_bank = pd.read_csv('./inventory.csv')
 
     question_bank = question_bank.loc[question_bank['tag'].isin(skill_list)]
+    question_bank = question_bank.loc[question_bank['difficulty'].isin(['easy','med'])]
+
+    return question_bank['question']
+
+def get_questions_for_round_2(skill_list):
+    question_bank = pd.read_csv('./inventory.csv')
+
+    question_bank = question_bank.loc[question_bank['tag'].isin(skill_list)]
+    question_bank = question_bank.loc[question_bank['difficulty'].isin(['med','hard'])]
 
     return question_bank['question']
 
@@ -83,6 +92,20 @@ if __name__=='__main__':
     text = extract_text_from_pdf('./JD/MS_JD.pdf') # Can be autoupdated based on Candidate id/ Job id
     skill_list = list(extract_tech_skills(text))
     print('Tech Skills : ',skill_list)
-    questions_list = list(get_questions(skill_list))
-    print(questions_list)
-    print(random.sample(questions_list, 3))
+    print()
+    print('-----------------------------------------------------------')
+    skill_list.append('datastructures')
+    questions_list = list(get_questions_for_round_1(skill_list))
+    print("All Questions for Round 1: ",questions_list)
+    print("Recommended Questions for Round 1: ",random.sample(questions_list, 3))
+    print()
+    print('-----------------------------------------------------------')
+    skill_list.remove('datastructures')
+    skill_list.append('systemdesign')
+    questions_list = list(get_questions_for_round_2(skill_list))
+    print("All Questions for Round 2: ",questions_list)
+    print("Recommended Questions for Round 2: ",random.sample(questions_list, 3))
+    print()
+    print('-----------------------------------------------------------')
+
+

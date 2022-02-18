@@ -7,3 +7,8 @@ ques_id,question,tag,difficulty
 6,C1,c,med
 7,OOPS2,oops,easy
 8,JS1,js,easy
+9,sys_design1,systemdesign,med
+10,DS1,datastructures,easy
+11,DS2,datastructures,med
+12,sys_design2,systemdesign,hard
+

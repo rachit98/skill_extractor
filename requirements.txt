@@ -3,3 +3,6 @@ libraries
 - docx2txt
 - nltk
 - numpy
+- random
+- pandas
+- flask
